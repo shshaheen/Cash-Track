@@ -10,9 +10,9 @@ class Expenses extends StatefulWidget {
 
 class _ExpensesState extends State<Expenses> {
   final List<Expense> _registeredExpenses = [
-    Expense(title: "Flutter Course", amount: "200", date: DateTime.now(), category: Category.work),
-    Expense(title: "Groceries", amount: "150", date: DateTime.now().subtract(Duration(days: 1)), category: Category.food),
-    Expense(title: "Travel", amount: "500", date: DateTime.now().subtract(Duration(days: 3)), category: Category.travel),
+    Expense(title: "Flutter Course", amount: 200, date: DateTime.now(), category: Category.work),
+    Expense(title: "Groceries", amount: 150, date: DateTime.now().subtract(Duration(days: 1)), category: Category.food),
+    Expense(title: "Travel", amount: 500, date: DateTime.now().subtract(Duration(days: 3)), category: Category.travel),
   ];
   @override
   Widget build(BuildContext context) {
