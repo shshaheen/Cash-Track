@@ -1,4 +1,5 @@
 import 'package:cash_track/models/expense.dart';
+import 'package:cash_track/widgets/expenses_list/expenses_item.dart';
 import 'package:flutter/cupertino.dart';
 
 class ExpensesList extends StatelessWidget {
@@ -11,7 +12,7 @@ class ExpensesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: expenses.length,
-      itemBuilder: (ctx, index) => Text(expenses[index].title),
+      itemBuilder: (ctx, index) => ExpensesItem(expense: expenses[index]),
       );
   }
 }
