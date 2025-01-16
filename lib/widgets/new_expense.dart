@@ -11,6 +11,8 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime? _selectedDate;
+  Category _categoryController = Category.food;
+
   void _presentDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
@@ -41,18 +43,18 @@ class _NewExpenseState extends State<NewExpense> {
           TextField(
             controller: _titleController,
             maxLength: 50,
-            // keyboardType: TextInputType.numberWithOptions(),
-            decoration: InputDecoration(
+            decoration:const InputDecoration(
               label: Text('Title'),
             ),
           ),
+          const SizedBox(height: 15,),
           Row(
             children: [
               Expanded(
                 child: TextField(
                   controller: _amountController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration:const InputDecoration(
                     prefixText: '\$',
                     label: Text('Amount'),
                   ),
@@ -78,8 +80,27 @@ class _NewExpenseState extends State<NewExpense> {
               )
             ],
           ),
+          const SizedBox(height: 20,),
           Row(
             children: [
+              DropdownButton(
+                value: _categoryController,
+                items: Category.values.map(                  
+                  (category) => DropdownMenuItem(
+                    value: category,
+                    child: Text(category.name.toUpperCase(),
+                  ),),
+                ).toList(), 
+                onChanged: (value){
+                  if(value == null){
+                      return;
+                    }
+                  setState(() {
+                    _categoryController = value;
+
+                  });
+                }),
+              const  Spacer(),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -92,8 +113,7 @@ class _NewExpenseState extends State<NewExpense> {
                     print(_amountController.text);
                   },
                   child: Text("Save Expense")),
-              SizedBox(width: 5.0),
-            ],
+          ],
           )
         ],
       ),
