@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 var kColorScheme = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 159, 29, 234),
 );
+var kDarkColorScheme =
+    ColorScheme.fromSeed(
+      brightness: Brightness.dark,
+      seedColor: const Color.fromARGB(255, 5, 99, 125),);
 void main() {
   runApp(MyApp());
 }
@@ -14,6 +18,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData.dark().copyWith(
+        colorScheme: kDarkColorScheme,
+        cardTheme: const CardTheme().copyWith(
+          color: kDarkColorScheme.secondaryContainer,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kDarkColorScheme.primaryContainer,
+            foregroundColor: kDarkColorScheme.onPrimaryContainer,
+          ),
+        ),
+         appBarTheme: const AppBarTheme().copyWith(
+          backgroundColor: kDarkColorScheme.primaryContainer,
+          // foregroundColor: kDarkColorScheme.onPrimaryContainer,
+        ),
+      ),
       theme: ThemeData(
         colorScheme: kColorScheme,
         appBarTheme: const AppBarTheme().copyWith(
@@ -22,7 +43,7 @@ class MyApp extends StatelessWidget {
         ),
         cardTheme: const CardTheme().copyWith(
           color: kColorScheme.secondaryContainer,
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -31,12 +52,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
         textTheme: ThemeData().textTheme.copyWith(
-          titleLarge: TextStyle(
-            fontWeight: FontWeight.normal,
-          color: kColorScheme.onSecondaryContainer, 
-          fontSize: 20,),
-        ),
-        ),//Default now
+              titleLarge: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: kColorScheme.onSecondaryContainer,
+                fontSize: 20,
+              ),
+            ),
+      ), 
+      
+      // theme
       home: const Expenses(),
     );
   }
