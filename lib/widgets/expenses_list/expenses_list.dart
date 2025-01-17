@@ -1,6 +1,6 @@
 import 'package:cash_track/models/expense.dart';
 import 'package:cash_track/widgets/expenses_list/expenses_item.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ExpensesList extends StatelessWidget {
   const ExpensesList({

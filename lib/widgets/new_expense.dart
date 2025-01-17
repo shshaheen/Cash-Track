@@ -1,8 +1,10 @@
+// import 'package:cash_track/widgets/expenses_list/expenses_item.dart';
 import 'package:flutter/material.dart';
 import 'package:cash_track/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+  final void Function(Expense expense) onAddExpense;
   @override
   State<NewExpense> createState() => _NewExpenseState();
 }
@@ -10,13 +12,13 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+
   DateTime? _selectedDate;
   Category _categoryController = Category.food;
 
   void _presentDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
-    // final lastDate = DateTime(now.year+1, now.month, now.day);
     final pickedDate = await showDatePicker(
         context: context,
         initialDate: now,
@@ -27,26 +29,18 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _amountController.dispose();
-    super.dispose();
-  }
-
+ 
   void _submitExpenseData() {
     final enteredAmount = double.tryParse(_amountController.text);
-    final amountIsInvalid = enteredAmount == null || enteredAmount < 0;
-    if (amountIsInvalid ||
-        _titleController.text.trim().isEmpty ||
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty  || amountIsInvalid ||
         _selectedDate == null) {
       //Show Error message
       showDialog(
           context: context,
-          builder: (ctx) {
-            return AlertDialog(
-              title: Text("Invalid Input"),
-              content: Text(
+          builder: (ctx) => AlertDialog(
+              title: const Text("Invalid Input"),
+              content: const Text(
                   "Please make sure a valid Title,Amount,Date and Category was entered."),
               actions: [
                 TextButton(
@@ -56,17 +50,30 @@ class _NewExpenseState extends State<NewExpense> {
                   child: Text("Okay"),
                 ),
               ],
-            );
-          });
+            ),
+          );
       return;
     }
-
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text,
+         amount: enteredAmount, 
+         date: _selectedDate!, 
+         category: _categoryController
+      ));
+    Navigator.pop(context);
+  }
+   @override
+  void dispose() {
+    _titleController.dispose();
+    _amountController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding:const EdgeInsets.all(16.0),
       child: Column(
         children: [
           TextField(
@@ -75,9 +82,6 @@ class _NewExpenseState extends State<NewExpense> {
             decoration: const InputDecoration(
               label: Text('Title'),
             ),
-          ),
-          const SizedBox(
-            height: 15,
           ),
           Row(
             children: [
@@ -91,7 +95,7 @@ class _NewExpenseState extends State<NewExpense> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 16,
               ),
               Expanded(
@@ -101,10 +105,10 @@ class _NewExpenseState extends State<NewExpense> {
                   children: [
                     Text(_selectedDate == null
                         ? "No Date Selected"
-                        : formatter.format(_selectedDate!)),
+                        : formatter.format(_selectedDate!),),
                     IconButton(
                       onPressed: _presentDatePicker,
-                      icon: Icon(Icons.calendar_month),
+                      icon: const Icon(Icons.calendar_month),
                     ),
                   ],
                 ),
@@ -135,23 +139,19 @@ class _NewExpenseState extends State<NewExpense> {
                     setState(() {
                       _categoryController = value;
                     });
-                  }),
+                  },),
               const Spacer(),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("Cancel"),
+                child: const Text("Cancel"),
               ),
               ElevatedButton(
-                  onPressed: () {
-                    _submitExpenseData();
-                    print(_titleController.text);
-                    print(_amountController.text);
-                  },
+                  onPressed: _submitExpenseData,
                   child: Text("Save Expense")),
             ],
-          )
+          ),
         ],
       ),
     );

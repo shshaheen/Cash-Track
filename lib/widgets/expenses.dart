@@ -19,31 +19,41 @@ class _ExpensesState extends State<Expenses> {
     Expense(
         title: "Groceries",
         amount: 150,
-        date: DateTime.now().subtract(Duration(days: 1)),
+        date: DateTime.now(),
         category: Category.food),
     Expense(
         title: "Travel",
         amount: 500,
-        date: DateTime.now().subtract(Duration(days: 3)),
+        date: DateTime.now(),
         category: Category.travel),
   ];
+
+
+
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (ctx) => NewExpense(),
+      builder: (ctx) => NewExpense(
+        onAddExpense: _addExpense,
+      ),
     );
-    
   }
 
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter Expense Tracker"),
+        title:const  Text("Flutter ExpenseTracker"),
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
             onPressed: _openAddExpenseOverlay,
+            icon:const  Icon(Icons.add),
           ),
         ],
       ),
