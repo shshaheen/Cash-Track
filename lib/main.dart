@@ -1,15 +1,23 @@
 import 'package:cash_track/widgets/expenses.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 159, 29, 234),
 );
-var kDarkColorScheme =
-    ColorScheme.fromSeed(
-      brightness: Brightness.dark,
-      seedColor: const Color.fromARGB(255, 5, 99, 125),);
+var kDarkColorScheme = ColorScheme.fromSeed(
+  brightness: Brightness.dark,
+  seedColor: const Color.fromARGB(255, 5, 99, 125),
+);
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,    
+    DeviceOrientation.portraitDown,
+  ]).then((fn) {
+    runApp(MyApp());
+  });
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +38,7 @@ class MyApp extends StatelessWidget {
             foregroundColor: kDarkColorScheme.onPrimaryContainer,
           ),
         ),
-         appBarTheme: const AppBarTheme().copyWith(
+        appBarTheme: const AppBarTheme().copyWith(
           backgroundColor: kDarkColorScheme.primaryContainer,
           // foregroundColor: kDarkColorScheme.onPrimaryContainer,
         ),
@@ -58,8 +66,8 @@ class MyApp extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-      ), 
-      
+      ),
+
       // theme
       home: const Expenses(),
     );
